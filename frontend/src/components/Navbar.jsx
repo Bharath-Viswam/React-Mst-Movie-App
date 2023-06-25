@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
-import { AppBar, Button, Toolbar, Typography } from '@mui/material';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react'
+import { AppBar, Button, TextField, Toolbar, Typography } from '@mui/material';
+import { Link, useNavigate } from 'react-router-dom';
 import '../App.css'
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -12,11 +12,34 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import CssBaseline from '@mui/material/CssBaseline';
+import SearchIcon from '@mui/icons-material/Search';
 const drawerWidth = 240;
 
 const Navbar = (props ) => {
+  const navigate = useNavigate()
   const{window} = props; 
+  const[qry,setQry] = useState({qry:''})
+
   const [mobileOpen, setMobileOpen] = useState(false)
+
+
+  const inputHandler = (e)=>{
+const{name,value} = e.target;
+setQry((qry)=>({...qry,[name]:value}))
+
+  }
+  const navigateOptions ={
+    state:{
+      qry
+    }
+  }
+  const addSearch = ()=>{
+
+console.error("gi")
+  navigate("/search",navigateOptions)
+
+
+  }
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
   };
@@ -102,7 +125,9 @@ Movie Management App
             ))} */}
               <div  className='nav'  style={{flexDirection:'row',justifyContent:'center'}}> <Button ><Link to={'/'} style={{textDecoration:'none',color:'white'}}>Home</Link></Button>
                 <Button><Link to={'/addmovie'} style={{textDecoration:'none',color:'white'}}>Add Movie</Link></Button>
-                <Button><Link to={'/aboutus'} style={{textDecoration:'none',color:'white'}}>About us</Link></Button></div>
+                <Button><Link to={'/aboutus'} style={{textDecoration:'none',color:'white'}}>About us</Link></Button>
+                <TextField variant='standard' name='qry' value={qry.qry} onChange={inputHandler}></TextField><Button variant='contained' onClick={addSearch}><SearchIcon ></SearchIcon></Button>
+                </div>
 
           </Box>
         </Toolbar>
